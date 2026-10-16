@@ -10,7 +10,7 @@ protocol_list=(
     VLESS-H2-TLS
     VLESS-WS-TLS
     VLESS-gRPC-TLS
-    # VLESS-XTLS-uTLS-REALITY
+    VLESS-XTLS-uTLS-REALITY
     Trojan-H2-TLS
     Trojan-WS-TLS
     Trojan-gRPC-TLS
@@ -894,9 +894,9 @@ add() {
         ws | h2 | grpc | vws | vh2 | vgrpc | tws | th2 | tgrpc)
             is_new_protocol=$(sed -E "s/^V/VLESS-/;s/^T/Trojan-/;/^(W|H|G)/{s/^/VMess-/};s/G/g/" <<<${is_lower^^})-TLS
             ;;
-        # r | reality)
-        #     is_new_protocol=VLESS-XTLS-uTLS-REALITY
-        #     ;;
+        r | reality)
+            is_new_protocol=VLESS-XTLS-uTLS-REALITY
+            ;;
         ss)
             is_new_protocol=Shadowsocks
             ;;
@@ -943,12 +943,13 @@ add() {
             is_add_opts="[port] [uuid] [type]"
         fi
         ;;
-    # *reality*)
-    #     is_reality=1
-    #     is_use_port=$2
-    #     is_use_uuid=$3
-    #     is_use_servername=$4
-    #     ;;
+    *reality*)
+        is_reality=1
+        is_use_port=$2
+        is_use_uuid=$3
+        is_use_servername=$4
+        is_add_opts="[port] [uuid] [serverName]"
+        ;;
     shadowsocks)
         is_use_port=$2
         is_use_pass=$3
@@ -1022,7 +1023,7 @@ add() {
 
     # prefer args.
     if [[ $2 ]]; then
-        for v in is_use_port is_use_uuid is_use_header_type is_use_host is_use_path is_use_pass is_use_method is_use_door_addr is_use_door_port is_use_dynamic_port_start is_use_dynamic_port_end; do
+        for v in is_use_port is_use_uuid is_use_header_type is_use_host is_use_path is_use_pass is_use_method is_use_door_addr is_use_door_port is_use_dynamic_port_start is_use_dynamic_port_end is_use_servername; do
             [[ ${!v} == 'auto' ]] && unset $v
         done
 
