@@ -50,7 +50,7 @@
 
 # 帮助
 
-使用: `v2ray help`
+使用: `xray help`
 
 ```
 V2Ray script v4.21 by 233boy
