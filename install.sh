@@ -61,16 +61,16 @@ amd64 | x86_64)
     ;;
 esac
 
-is_core=v2ray
-is_core_name=V2Ray
+is_core=xray
+is_core_name=Xray
 is_core_dir=/etc/$is_core
 is_core_bin=$is_core_dir/bin/$is_core
-is_core_repo=v2fly/$is_core-core
+is_core_repo=XTLS/Xray-core
 is_conf_dir=$is_core_dir/conf
 is_log_dir=/var/log/$is_core
 is_sh_bin=/usr/local/bin/$is_core
 is_sh_dir=$is_core_dir/sh
-is_sh_repo=$author/$is_core
+is_sh_repo=wukuili/v2ray
 is_pkg="wget unzip"
 is_config_json=$is_core_dir/config.json
 tmp_var_lists=(
@@ -125,10 +125,10 @@ msg() {
 # show help msg
 show_help() {
     echo -e "Usage: $0 [-f xxx | -l | -p xxx | -v xxx | -h]"
-    echo -e "  -f, --core-file <path>          自定义 $is_core_name 文件路径, e.g., -f /root/${is_core}-linux-64.zip"
+    echo -e "  -f, --core-file <path>          自定义 $is_core_name 文件路径, e.g., -f /root/${is_core_name}-linux-64.zip"
     echo -e "  -l, --local-install             本地获取安装脚本, 使用当前目录"
     echo -e "  -p, --proxy <addr>              使用代理下载, e.g., -p http://127.0.0.1:2333"
-    echo -e "  -v, --core-version <ver>        自定义 $is_core_name 版本, e.g., -v v5.4.1"
+    echo -e "  -v, --core-version <ver>        自定义 $is_core_name 版本, e.g., -v v25.1.1"
     echo -e "  -h, --help                      显示此帮助界面\n"
 
     exit 0
@@ -161,8 +161,8 @@ install_pkg() {
 download() {
     case $1 in
     core)
-        link=https://github.com/${is_core_repo}/releases/latest/download/${is_core}-linux-${is_core_arch}.zip
-        [[ $is_core_ver ]] && link="https://github.com/${is_core_repo}/releases/download/${is_core_ver}/${is_core}-linux-${is_core_arch}.zip"
+        link=https://github.com/${is_core_repo}/releases/latest/download/${is_core_name}-linux-${is_core_arch}.zip
+        [[ $is_core_ver ]] && link="https://github.com/${is_core_repo}/releases/download/${is_core_ver}/${is_core_name}-linux-${is_core_arch}.zip"
         name=$is_core_name
         tmpfile=$tmpcore
         is_ok=$is_core_ok
@@ -243,7 +243,7 @@ pass_args() {
             ;;
         -f | --core-file)
             [[ -z $2 ]] && {
-                err "($1) 缺少必需参数, 正确使用示例: [$1 /root/$is_core-linux-64.zip]"
+                err "($1) 缺少必需参数, 正确使用示例: [$1 /root/${is_core_name}-linux-64.zip]"
             } || [[ ! -f $2 ]] && {
                 err "($2) 不是一个常规的文件."
             }
@@ -266,7 +266,7 @@ pass_args() {
             ;;
         -v | --core-version)
             [[ -z $2 ]] && {
-                err "($1) 缺少必需参数, 正确使用示例: [$1 v1.8.1]"
+                err "($1) 缺少必需参数, 正确使用示例: [$1 v25.1.1]"
             }
             is_core_ver=v${2#v}
             shift 2

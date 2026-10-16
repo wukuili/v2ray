@@ -145,9 +145,11 @@ get_port() {
 }
 
 get_pbk() {
-    is_tmp_pbk=($($is_core_bin x25519 | sed 's/.*://'))
-    is_private_key=${is_tmp_pbk[0]}
-    is_public_key=${is_tmp_pbk[1]}
+    # old: "Private key:" / "Public key:"; new: "PrivateKey:" / "Password:" (the public key)
+    is_tmp_pbk=$($is_core_bin x25519)
+    is_private_key=$(grep -i '^private' <<<"$is_tmp_pbk" | sed 's/.*://;s/[[:space:]]//g')
+    is_public_key=$(grep -i -E '^(public|password)' <<<"$is_tmp_pbk" | head -n1 | sed 's/.*://;s/[[:space:]]//g')
+    [[ ! $is_private_key || ! $is_public_key ]] && err "生成 Reality 密钥失败, 请检查内核是否为 Xray: $is_core_bin x25519"
 }
 
 show_list() {
